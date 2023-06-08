@@ -50,11 +50,11 @@
         successMessage.textContent = "Item dropped successfully!";
         successMessage.style.opacity = "1";
 
-        let opacity = 1;
+        let brightness = 2;
         const interval = setInterval(function() {
-            opacity -= 0.05;
-            successMessage.style.opacity = opacity;
-            if (opacity <= 0) {
+            brightness -= 0.05;
+            successMessage.style.opacity = brightness;
+            if (brightness <= 0) {
                 clearInterval(interval);
                 successMessage.style.opacity = "0";
             }
