@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drag-Drop</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div id="left">
+            <div class="list" draggable="true" ondragstart="dragStart(event)"><img src="download.png" alt="bulb-icon">List Item 1</div>
+            <div class="list" draggable="true" ondragstart="dragStart(event)"><img src="download.png" alt="bulb-icon">List Item 2</div>
+            <div class="list" draggable="true" ondragstart="dragStart(event)"><img src="download.png" alt="bulb-icon">List Item 3</div>
+            <div class="list" draggable="true" ondragstart="dragStart(event)"><img src="download.png" alt="bulb-icon">List Item 4</div>
+        </div>
+        <div id="right"></div>
+        <button id="resetButton" class="reset-button">Reset</button>
+        <div id="successMessage"></div>
+    </div>
+
+    <script>
+        let lists = document.getElementsByClassName("list");
+        let rightBox = document.getElementById("right");
+        let leftBox = document.getElementById("left");
+        let successMessage = document.getElementById("successMessage");
+        let originalLeftBoxContent = leftBox.innerHTML;
+
+        function dragStart(event) {
+            event.target.classList.add("dragged");
+        }
+
+        for (let list of lists) {
+            list.addEventListener("dragend", function(e) {
+                let selected = e.target;
+                selected.classList.remove("dragged");
+            });
+        }
+
+        rightBox.addEventListener("dragover", function(e) {
+            e.preventDefault();
+        });
+
+        rightBox.addEventListener("drop", function(e) {
+    e.preventDefault();
+    let selected = document.querySelector(".list.dragged");
+    if (selected) {
+        rightBox.appendChild(selected);
+        successMessage.textContent = "Item dropped successfully!";
+        successMessage.style.opacity = "1";
+
+        let opacity = 2;
+        const interval = setInterval(function() {
+            opacity -= 0.05;
+            successMessage.style.opacity = opacity;
+            if (opacity <= 0) {
+                clearInterval(interval);
+                successMessage.style.opacity = "0";
+            }
+        }, 20);
+    }
+});
+
+
+        let resetButton = document.getElementById("resetButton");
+
+        resetButton.addEventListener("click", function() {
+            rightBox.innerHTML = "";
+            leftBox.innerHTML = originalLeftBoxContent;
+            successMessage.textContent = "";
+        });
+    </script>
+</body>
+</html>
